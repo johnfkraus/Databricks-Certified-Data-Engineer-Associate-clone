@@ -72,7 +72,7 @@ SELECT * FROM csv.`${dataset.bookstore}/books-csv`
 
 -- COMMAND ----------
 
-CREATE TABLE books_csv
+CREATE TABLE IF NOT EXISTS books_csv
   (book_id STRING, title STRING, author STRING, category STRING, price DOUBLE)
 USING CSV
 OPTIONS (
@@ -138,21 +138,21 @@ SELECT COUNT(*) FROM books_csv
 
 -- COMMAND ----------
 
-CREATE TABLE customers AS
+CREATE TABLE IF NOT EXISTS customers AS
 SELECT * FROM json.`${dataset.bookstore}/customers-json`;
 
 DESCRIBE EXTENDED customers;
 
 -- COMMAND ----------
 
-CREATE TABLE books_unparsed AS
+CREATE TABLE IF NOT EXISTS books_unparsed AS
 SELECT * FROM csv.`${dataset.bookstore}/books-csv`;
 
 SELECT * FROM books_unparsed;
 
 -- COMMAND ----------
 
-CREATE TEMP VIEW books_tmp_vw
+CREATE OR REPLACE TEMP VIEW books_tmp_vw
    (book_id STRING, title STRING, author STRING, category STRING, price DOUBLE)
 USING CSV
 OPTIONS (
@@ -161,7 +161,7 @@ OPTIONS (
   delimiter = ";"
 );
 
-CREATE TABLE books AS
+CREATE TABLE IF NOT EXISTS books AS
   SELECT * FROM books_tmp_vw;
   
 SELECT * FROM books
