@@ -21,6 +21,10 @@ VALUES (1, 'iPhone 14', 'Apple', 2022),
 
 -- COMMAND ----------
 
+DESCRIBE EXTENDED smartphones;
+
+-- COMMAND ----------
+
 SHOW TABLES
 
 -- COMMAND ----------
@@ -42,6 +46,10 @@ SELECT * FROM view_apple_phones;
 -- COMMAND ----------
 
 SHOW TABLES;
+
+-- COMMAND ----------
+
+DESCRIBE EXTENDED view_apple_phones;
 
 -- COMMAND ----------
 
@@ -69,9 +77,9 @@ SHOW TABLES;
 
 -- COMMAND ----------
 
-CREATE GLOBAL TEMP VIEW global_temp_view_latest_phones
+CREATE OR REPLACE GLOBAL TEMP VIEW global_temp_view_latest_phones
 AS SELECT * FROM smartphones
-    WHERE year > 2020
+    WHERE year > 2021
     ORDER BY year DESC;
 
 -- COMMAND ----------

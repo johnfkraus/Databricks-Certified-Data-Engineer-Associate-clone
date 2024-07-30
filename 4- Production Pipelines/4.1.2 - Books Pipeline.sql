@@ -37,9 +37,15 @@ APPLY CHANGES INTO LIVE.books_silver
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC
--- MAGIC
 -- MAGIC ## Gold Layer Tables
+-- MAGIC
+-- MAGIC At the gold layer we define a simple aggregate query to create a live table from the data in our book_silver table.
+-- MAGIC
+-- MAGIC this is not a streaming table.
+-- MAGIC
+-- MAGIC Since data is being updated and deleted from our book_silver table, it is no more valid to be a streaming source for this new table.
+-- MAGIC
+-- MAGIC Remember streaming sources must be append only tables.
 
 -- COMMAND ----------
 
@@ -53,6 +59,27 @@ AS SELECT author, count(*) as books_count, current_timestamp() updated_time
 
 -- MAGIC %md
 -- MAGIC ## DLT Views
+-- MAGIC
+-- MAGIC
+-- MAGIC Lastly, we see here how to define a DLT view.
+-- MAGIC
+-- MAGIC In DLT pipelines,
+-- MAGIC
+-- MAGIC we can also define views. To define a view,
+-- MAGIC
+-- MAGIC Simply replace TABLE with the VIEW keyword.
+-- MAGIC
+-- MAGIC DLT views are temporary views scoped to the DLT pipeline they are a part of, so they are not persisted to the metastore.
+-- MAGIC
+-- MAGIC Views can still be used to enforce data equality. And metrics for views will be collected and reported as they would be for tables.
+-- MAGIC
+-- MAGIC Here, we see how we can join and reference tables across notebooks.
+-- MAGIC
+-- MAGIC We are joining our book_silver table to the orders_cleaned Table, which we created in another notebook in the last lecture.
+-- MAGIC
+-- MAGIC Since DLT supports scheduling multiple notebooks as part of a single DLT pipeline configuration,  code in any notebook can reference tables and the views created in any other notebook.
+-- MAGIC
+-- MAGIC Essentially, you can think of the scope of the schema referenced by the LIVE keyword to be at the Delta pipeline level rather than the individual notebook.
 
 -- COMMAND ----------
 
