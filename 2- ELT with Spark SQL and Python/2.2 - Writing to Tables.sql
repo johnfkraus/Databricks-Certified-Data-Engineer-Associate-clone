@@ -11,6 +11,10 @@
 
 -- COMMAND ----------
 
+DROP TABLE IF EXISTS orders;
+
+-- COMMAND ----------
+
 CREATE TABLE IF NOT EXISTS orders AS
 SELECT * FROM parquet.`${dataset.bookstore}/orders`
 
@@ -110,6 +114,28 @@ DESCRIBE HISTORY orders
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC
+-- MAGIC And if you try to insert overwrite the data with different schema, for example, here we are adding
+-- MAGIC
+-- MAGIC a new column of the data for the current timestamp.
+-- MAGIC
+-- MAGIC By running this command, we see that it generates an exception.
+-- MAGIC
+-- MAGIC And the exception says a schema mismatch detected when writing to the Delta table.
+-- MAGIC
+-- MAGIC So the way how they enforce schema on-write is the primary difference between INSERT OVERWRITE and
+-- MAGIC
+-- MAGIC CREATE OR REPLACE TABLE statements.
+-- MAGIC
+-- MAGIC Let us now talk about appending records to tables.
+-- MAGIC
+-- MAGIC The easiest method is to use INSERT INTO statement.
+-- MAGIC
+-- MAGIC Here we are inserting new data using an input query that query the parquet files in the orders-new
+
+-- COMMAND ----------
+
 INSERT OVERWRITE orders
 SELECT *, current_timestamp() FROM parquet.`${dataset.bookstore}/orders`
 
@@ -117,6 +143,8 @@ SELECT *, current_timestamp() FROM parquet.`${dataset.bookstore}/orders`
 
 -- MAGIC %md
 -- MAGIC ## Appending Data
+-- MAGIC
+-- MAGIC Can insert duplicate records.
 
 -- COMMAND ----------
 

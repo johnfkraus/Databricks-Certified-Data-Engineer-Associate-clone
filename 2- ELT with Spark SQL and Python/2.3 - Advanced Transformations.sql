@@ -30,8 +30,21 @@ FROM customers
 
 -- COMMAND ----------
 
+-- this will fail; needs the schema of the JSON object
 SELECT from_json(profile) AS profile_struct
   FROM customers;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC
+-- MAGIC we can derive the schema from our current data.
+-- MAGIC
+-- MAGIC For this we need a sample data of our JSON value with non null fields.
+-- MAGIC
+-- MAGIC Now we can copy this sample data and provide it to the schema_of_json function.
+-- MAGIC
+-- MAGIC And we will store these parsed records in a temporary view.
 
 -- COMMAND ----------
 

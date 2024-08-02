@@ -138,6 +138,23 @@ SELECT COUNT(*) FROM books_csv
 
 -- COMMAND ----------
 
+CREATE TABLE audit_log_updates2 AS 
+SELECT *,  input_file_name() as input_file_name, current_timestamp() as ingest_timestamp  
+FROM json.`dbfs:/mnt/s3logdeliverydataread/log-data`;
+
+
+-- COMMAND ----------
+
+SELECT requestParams['targetUserName'] from audit_log_updates2
+WHERE requestParams['targetUserName'] IS NOT NULL;
+
+-- COMMAND ----------
+
+DESCRIBE audit_log_updates2;
+
+-- COMMAND ----------
+
+DROP TABLE customers;
 CREATE TABLE IF NOT EXISTS customers AS
 SELECT * FROM json.`${dataset.bookstore}/customers-json`;
 
